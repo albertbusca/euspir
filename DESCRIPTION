@@ -1,7 +1,7 @@
 Package: euspir
 Type: Package
 Title: EU-SPI (2020) Replication and Analysis
-Version: 0.1.0
+Version: 0.1.1
 Author: Albert Busca
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: This package allows for the creation of the EU-SPI following every step of its methodology as seen in the methodology papers.    This package is in no way affiliated or working with any official institutions of the European Union but a third-party initiative. It's main objective is to incentivise the analysis of the EU-SPI index by making it more accessible.
