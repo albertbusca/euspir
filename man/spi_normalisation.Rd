@@ -21,8 +21,8 @@ with the index (inverted = FALSE) or a negative relation with the index
 Normalised numeric value.
 }
 \description{
-Normalise the data accordin to the methodology seen in the EU-SPI(2020). It
-only works with single values, not matrices of data.
+Normalise the data according to the methodology seen in the EU-SPI (2020). It
+only works with single values; for vectors or matrices, see \link{spi_normalisation_m}.
 }
 \examples{
 spi_normalisation(20,0,100,TRUE)

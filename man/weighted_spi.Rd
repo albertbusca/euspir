@@ -4,36 +4,59 @@
 \alias{weighted_spi}
 \title{Calculation of the weighted components within EU-SPI (2020)}
 \usage{
-weighted_spi(country, unweighted_values = NULL, nationalValue = NULL)
+weighted_spi(
+  country,
+  unweighted_values = NULL,
+  national_value = NULL,
+  append = TRUE
+)
 }
 \arguments{
-\item{country}{NUTS-0 code of the country to weight. For several countries,
-country should be a vector of the NUTS-0 codes to be used. It can also take the value
-"all" so that it is applied to each EU country at once.}
+\item{country}{NUTS-0 code of the country to weight. For more than one country,
+it should be a string vector of the NUTS-0 codes to be used. It can also take
+the value "all" so that it is applied to all EU countries at once.}
 
-\item{unweighted_values}{Data frame with the values to weight of the chosen
-component. See details for more information about the format of the data frame.}
+\item{unweighted_values}{Data frame with the values to weight. By default it
+uses the official EU-SPI (2020) data. See details to learn how to use custom
+data.}
 
-\item{nationalValue}{Data frame with the national values to weight for the chosen
-component. See details for more information about the format of the data frame.}
+\item{national_value}{Data frame with the national values to use. By default it
+uses the official EU-SPI (2020) data. See details to learn how to use custom
+data.}
 }
 \description{
 Calculate the weighted value of a given component with the population data of
 the NUTS-2 regions, according to the EU-SPI (2020) methodology.
 }
 \details{
-The parameters unweighted_values and nationalValue dataframe should have the following
-format:
+\subsection{Custom unweighted values}{
 \itemize{
-\item First column(s) should be of type character. There is no rules on how many
-columns should the data frame have of this type but the function expects at
-least one to be named "NUTS_ID" and have the NUTS-2 or NUT-S0 code for each
-region on each row.
-\item The following columns should be of type numeric. Each column should have one
-component to be weighted and each row should represent one region or country.
+\item First column(s): At least one of the first columns should be called "NUTS_ID",
+this column should have the NUTS-2 code for each region to weight.
+\item The following columns should be numeric and each one should have one component
+to be weighted. Each row should represent one region.
+}
+}
+
+\subsection{Custom national values}{
+\itemize{
+\item First column(s): At least one of the first columns should be called "NUTS_ID",
+and have the NUTS-0 code for each country.
+\item The following columns should be numeric and each one should have the national
+values of one component. Each row should represent one country.
+}
 }
 }
 \examples{
+# With official data
+## For one country
+weighted_spi("AT") # Weighted values for Austria
+## For several countries
+weighted_spi(c("BE","ES")) # Weighted values for Belgium and Spain
+## For all countries
+weighted_spi("all")
+
+# With custom data
 data <- data.frame("NUTS_ID" = c("AT11", "AT12", "AT13", "AT21",
                                  "AT22", "AT31", "AT32", "AT33", "AT34"),
                    "Component1" = sample(1:100,9),

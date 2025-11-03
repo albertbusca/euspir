@@ -18,12 +18,12 @@
 #' this column should have the NUTS-2 code for each region to weight.
 #' - The following columns should be numeric and each one should have one component
 #' to be weighted. Each row should represent one region.
-#' 
+#'
 #' ## Custom national values
 #' - First column(s): At least one of the first columns should be called "NUTS_ID",
 #' and have the NUTS-0 code for each country.
 #' - The following columns should be numeric and each one should have the national
-#' vlaues of one component. Each row should represent one country.
+#' values of one component. Each row should represent one country.
 #'
 #' @examples
 #' # With official data
@@ -33,8 +33,8 @@
 #' weighted_spi(c("BE","ES")) # Weighted values for Belgium and Spain
 #' ## For all countries
 #' weighted_spi("all")
-#' 
-#' # With custom data 
+#'
+#' # With custom data
 #' data <- data.frame("NUTS_ID" = c("AT11", "AT12", "AT13", "AT21",
 #'                                  "AT22", "AT31", "AT32", "AT33", "AT34"),
 #'                    "Component1" = sample(1:100,9),
@@ -79,6 +79,7 @@ weighted_spi <- function(country, unweighted_values = NULL, national_value = NUL
   if (any(country == "all")) {
     population <- subset(population, !grepl("AL|CH|HR02|HR05|HR06|IS|XX|ME|MK|LI|NO|RS", population$geo))
     population <- subset(population, !grepl("AL|CH|HR02|HR05|HR06|IS|XX|ME|MK|LI|NO|RS", population$geo))
+    population <- na.omit(population)
     population <- population[order(population$geo),][1:720,]
     }
   else {

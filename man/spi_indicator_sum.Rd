@@ -6,9 +6,10 @@
 \usage{
 spi_indicator_sum(
   type,
-  norm_data = NULL,
+  data = NULL,
   component_name = "all",
-  component_index = NULL
+  component_index = NULL,
+  append = TRUE
 )
 }
 \arguments{
@@ -16,25 +17,30 @@ spi_indicator_sum(
 aggregate are at the NUTS-0 level or "regional" when the values to aggregate are
 at the NUTS-2 level.}
 
-\item{norm_data}{Data frame with the values of each indicator (column), for each
-region or country (rows). By default (norm_data = NULL) it takes the official
+\item{data}{Data frame with the values of each indicator (column), for each
+region or country (rows). By default (data = NULL) it takes the official
 data from the European Commission.}
 
-\item{component_name}{Name of the component to be obtained as the final result
+\item{component_name}{Name of the component(s) to be obtained as the final result
 of the aggregation. Alternatively, and by default, setting it to "all" uses the
-twelve names of the twelve official components on th EU-SPI (2020).}
+names of the twelve official components on the EU-SPI (2020).}
 
-\item{component_index}{List of the index of each component within the data frame
-provided. Each item of the list should be the indexes of one component's indicators.
-By default (component_index = NULL) it will assume that the index follows the
-official data when norm_data is also NULL or that all the data frame is only
-one component when norm_data is not NULL.}
+\item{component_index}{List of the column indeces of each component within data.
+Each item of the list should be a numeric vector stating the indeces of each
+component's indicators. By default it will assume that the index follows the
+official data when data is not provided or that all the indicators are to be
+aggregated to only one component when data is provided.}
+
+\item{append}{Logical argument. By default (TRUE) retains the values of all
+indicators alongside the aggregated values of each component. When set to FALSE,
+only the aggregated values are kept.}
 }
 \description{
 Aggregate a set of indicators as seen in the EU-SPI (2020) methodology.
 }
 \examples{
 #With the official data
+regional_components <- spi_indicator_sum("regional")
 national_components <- spi_indicator_sum("national")
 
 #With custom data

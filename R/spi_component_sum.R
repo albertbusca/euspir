@@ -14,22 +14,25 @@
 #' as the result of the aggregation. If not provided, it will take the corresponding
 #' official data according to the type parameter. See details for using custom data.
 #' @param b β value, a constant that can be adjusted to change the level of
-#' compensability of the index. From β = 1 for the arithemtic mean to β = 0 for
+#' compensability of the index. From β = 1 for the arithmetic mean to β = 0 for
 #' the geometric mean. The default value is β = 0.5 as per the EU-SPI (2020) methodology.
-#' @param index A list of numeric vectors. Only needed when type is custom. Each item 
+#' @param index A list of numeric vectors. Only needed when type is custom. Each item
 #' should represent the index of the components of each dimension. If not provided,
 #' it will take the corresponding official indices for the official data or, if type
 #' is custom, it will assume that everything must be aggregated to a single index.
-#' 
-#' @details 
+#' @param append Logical argument. By default (TRUE) it will retain the original
+#' values alongside the calculated aggregated index. Alternatively, if set to FALSE
+#' it will only keep the aggregated values.
+#'
+#' @details
 #' When using custom data, type must be set to custom. Data must be provided.
-#' 
+#'
 #' ## Aggregating to a global index
 #' When aggregating all variables to only one global indicator, the index parameter
-#' can be omitted. It will be assumed that all numeric columns in data should be
+#' can be omitted. It will be assumed that all numeric columns in 'data' should be
 #' aggregated. The name variable is optional, the global index will be named
 #' "Aggregated Index", or it can be changed using the parameter.
-#' 
+#'
 #' ## Aggregating to various dimensions
 #' When aggregating groups of variables to more than one dimension, the index parameter
 #' must be stated. The name variable is optional. Each dimension will be named "Dimension [n]",
@@ -39,8 +42,8 @@
 #' # With official data
 #' spi_component_sum("regional spi") # For the regional EU-SPI
 #' spi_component_sum("national dimension") # For the national dimensions
-#' 
-#' # With custom data 
+#'
+#' # With custom data
 #' #data <- data.frame("Regions" <- c("Region A", "Region B", "Region C"),
 #' #                   "Component1" <- sample(1:100, 3),
 #' #                   "Component2" <- sample(1:100, 3),
@@ -53,10 +56,10 @@
 #This function aggregates dimensions following the EU-SPI (2020) methodology
 spi_component_sum <- function(type, data = NULL, name = "Aggregated Index", b=0.5, index = NULL, append = TRUE){
   #Handle given data in case of potential errors
-  stopifnot(is.character(type))
-  if (!is.null(data)) {stopifnot(is.data.frame(data))}
-  stopifnot(is.character(name))
-  stopifnot(is.numeric(b))
+  if(!is.character(type)) {stop(paste0("Error: 'type' must be a character string, not a ", typeof(type), "."))}
+  if(!is.null(data) && !is.data.frame(data)) {stop(paste0("Error: 'data' must be a dataframe, not a ", typeof(data), "."))}
+  if(!is.character(name)) {stop(paste0("Error: 'name' must be a character string, not a ", typeof(type), "."))}
+  if(!is.numeric(b)) {stop(paste0("Error: 'b' must be a number, not a ", typeof(type), "."))}
   type <- tolower(type)
 
   #Retrieve data if necessary

@@ -11,11 +11,14 @@
 #' @param component_name Name of the component(s) to be obtained as the final result
 #' of the aggregation. Alternatively, and by default, setting it to "all" uses the
 #' names of the twelve official components on the EU-SPI (2020).
-#' @param component_index List of the column indeces of each comopnent within data.
-#' Eahc item of the list should be a numeric vector stating the indeces of each
+#' @param component_index List of the column indeces of each component within data.
+#' Each item of the list should be a numeric vector stating the indeces of each
 #' component's indicators. By default it will assume that the index follows the
 #' official data when data is not provided or that all the indicators are to be
-#' aggregated to only one component when nomr_data is provided.
+#' aggregated to only one component when data is provided.
+#' @param append Logical argument. By default (TRUE) retains the values of all
+#' indicators alongside the aggregated values of each component. When set to FALSE,
+#' only the aggregated values are kept.
 #'
 #' @examples
 #' #With the official data
@@ -33,9 +36,9 @@
 
 spi_indicator_sum <- function(type, data = NULL, component_name = "all", component_index = NULL, append = TRUE) {
   #Handle the data given in case of potential errors
-  stopifnot(is.character(type))
-  if (!is.null(data)) {stopifnot(is.data.frame(data))}
-  stopifnot(is.character(component_name))
+  if(!is.character(type)) {stop(paste0("Error: 'type' must be a character vector, not a ", typeof(type), "."))}
+  if(!is.null(data)) {if(!is.data.frame(data)) {stop(paste0("Error: 'data', must be a dataframe, not a ", typeof(data), "."))}}
+  if(!is.character(component_name)) {stop(paste0("Error: 'component_name' must be a character vector, not a ", typeof(component_name), "."))}
   type <- tolower(type)
 
   #Retrieve the data if needed

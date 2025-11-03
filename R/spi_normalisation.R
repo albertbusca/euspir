@@ -1,7 +1,7 @@
 #' Normalisation function within EU-SPI (2020)
 #' @description
 #' Normalise the data according to the methodology seen in the EU-SPI (2020). It
-#' only works with single values for vectors or matrices, see \link{spi_normalisation_m}.
+#' only works with single values; for vectors or matrices, see \link{spi_normalisation_m}.
 #'
 #' @param val Value that needs to be normalised
 #' @param dis_val Dystopic value of the indicator

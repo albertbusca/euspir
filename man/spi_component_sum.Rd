@@ -4,25 +4,69 @@
 \alias{spi_component_sum}
 \title{Component or dimension aggregation within EU-SPI (2020)}
 \usage{
-spi_component_sum(type, dataSet = NULL, dimensionName = "all", b = 0.5)
+spi_component_sum(
+  type,
+  data = NULL,
+  name = "Aggregated Index",
+  b = 0.5,
+  index = NULL,
+  append = TRUE
+)
 }
 \arguments{
-\item{type}{Placeholder}
+\item{type}{Variable that can take "regional dimension" to aggregate to the three
+dimensions at the NUTS-2 level, "national dimension" to aggregate to the three dimensions
+at the NUTS-0 (country) level, "regional spi" to aggregate to the EU-SPI index at the
+NUTS-2 level and "national spi" to aggregate to the EU-SPI at the NUTS-0 level.
+Alternatively, it can also take the value "custom" for custom data.}
 
-\item{dataSet}{Data frame of the components or dimensions to aggregate. The values
-should be numerical.}
+\item{data}{Data frame of the components or dimensions to aggregate. The values
+should be numerical. If not provided, it will take the corresponding official data
+according to the type parameter.}
 
-\item{dimensionName}{Name of the dimension or index that is to be retrieved
-as the result of the aggregation.}
+\item{name}{Name of the dimension or index that is to be retrieved
+as the result of the aggregation. If not provided, it will take the corresponding
+official data according to the type parameter. See details for using custom data.}
 
 \item{b}{β value, a constant that can be adjusted to change the level of
-compensability of the index. From β = 1 for the arithemtic mean to β = 0 for
-the geometric mean. The default value is β = 0.5.}
+compensability of the index. From β = 1 for the arithmetic mean to β = 0 for
+the geometric mean. The default value is β = 0.5 as per the EU-SPI (2020) methodology.}
+
+\item{index}{A list of numeric vectors. Only needed when type is custom. Each item
+should represent the index of the components of each dimension. If not provided,
+it will take the corresponding official indices for the official data or, if type
+is custom, it will assume that everything must be aggregated to a single index.}
+
+\item{append}{Logical argument. By default (TRUE) it will retain the original
+values alongside the calculated aggregated index. Alternatively, if set to FALSE
+it will only keep the aggregated values.}
 }
 \description{
 Aggregate components or dimensions following the EU-SPI (2020) methodology.
 }
+\details{
+When using custom data, type must be set to custom. Data must be provided.
+\subsection{Aggregating to a global index}{
+
+When aggregating all variables to only one global indicator, the index parameter
+can be omitted. It will be assumed that all numeric columns in 'data' should be
+aggregated. The name variable is optional, the global index will be named
+"Aggregated Index", or it can be changed using the parameter.
+}
+
+\subsection{Aggregating to various dimensions}{
+
+When aggregating groups of variables to more than one dimension, the index parameter
+must be stated. The name variable is optional. Each dimension will be named "Dimension \link{n}",
+or it can be changed using the parameter.
+}
+}
 \examples{
+# With official data
+spi_component_sum("regional spi") # For the regional EU-SPI
+spi_component_sum("national dimension") # For the national dimensions
+
+# With custom data
 #data <- data.frame("Regions" <- c("Region A", "Region B", "Region C"),
 #                   "Component1" <- sample(1:100, 3),
 #                   "Component2" <- sample(1:100, 3),
